@@ -131,8 +131,8 @@ angular.module("claims", [])
         $scope.updateRange = function(){
             console.log($scope.rangeStart, $scope.rangeEnd);
             if($scope.rangeStart && $scope.rangeEnd){
-                $scope.rangeStartR = moment($scope.rangeStart);
-                $scope.rangeEndR = moment($scope.rangeEnd);
+                $scope.rangeStartR = moment($scope.rangeStart).toISOString();
+                $scope.rangeEndR = moment($scope.rangeEnd).toISOString();
                 $scope.refresh();
             }
         };

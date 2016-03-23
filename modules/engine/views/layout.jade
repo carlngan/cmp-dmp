@@ -1,0 +1,253 @@
+doctype html
+html(lang='en', ng-app="cmpApp")
+    head
+        title Claims Management System - Data Management Portal
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='cache-control', content='no-cache')
+        meta(http-equiv='expires', content='Thu, 19 Nov 1900 08:52:00 GMT')
+        base(href="/")
+        link(rel='shortcut icon', href='images/icons/favicon.ico')
+        link(rel='apple-touch-icon', href='images/icons/favicon.png')
+        link(rel='apple-touch-icon', sizes='72x72', href='images/icons/favicon-72x72.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='images/icons/favicon-114x114.png')
+        // Loading bootstrap css
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700')
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Oswald:400,700,300')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/font-awesome/css/font-awesome.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap/css/bootstrap.min.css')
+        // LOADING STYLESHEET FOR PAGE
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        link(type='text/css', rel='stylesheet', href='vendors/calendar/zabuto_calendar.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/sco.message/sco.message.css')
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        // Loading style vendors
+        link(type='text/css', rel='stylesheet', href='vendors/animate.css/animate.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-pace/pace.css')
+        link(type='text/css', rel='stylesheet', href='vendors/iCheck/skins/all.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-notific8/jquery.notific8.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-daterangepicker/daterangepicker-bs3.css')
+        // Loading style
+        link.default-style(type='text/css', rel='stylesheet', href='css/themes/style1/blue-grey.css')
+        link(type='text/css', rel='stylesheet', href='css/style-responsive.css')
+        // LOADING STYLESHEET FOR PAGE
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-colorpicker/css/colorpicker.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-datepicker/css/datepicker.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-daterangepicker/daterangepicker-bs3.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-timepicker/css/bootstrap-timepicker.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-clockface/css/clockface.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-switch/css/bootstrap-switch.css')
+    body
+        div
+            // BEGIN BACK TO TOP
+            a#totop(href='#')
+                i.fa.fa-angle-up
+            // END BACK TO TOP
+            // BEGIN TOPBAR
+            #header-topbar-option-demo.page-header-topbar
+                nav#topbar.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0; z-index: 2;')
+                    .navbar-header
+                        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.sidebar-collapse')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a#logo.navbar-brand(href='/')
+                            span.fa.fa-rocket
+                            span.logo-text CMP
+                            span.logo-text-icon(style='display: none') F
+                    .topbar-main
+                        a#menu-toggle.hidden-xs(href='#')
+                            i.fa.fa-bars
+                        ul.nav.navbar-nav
+                            li.active
+                                a(href, ui-sref="claims") Claims
+                        form#topbar-search.hidden-xs(action='#', method='GET')
+                            .input-group
+                                input.form-control(type='text', placeholder='Search...')
+                                span.input-group-btn
+                                    a.btn.submit(href='javascript:;')
+                                        i.fa.fa-search
+                        ul.nav.navbar.navbar-top-links.navbar-right.mbn
+                            li.dropdown.topbar-user
+                                a.dropdown-toggle(data-hover='dropdown', href='#')
+                                    img.img-responsive.img-circle(src='/images/me.jpg', alt='')
+                                    span.hidden-xs Carl Ngan
+                                    span.caret
+                                ul.dropdown-menu.dropdown-user.pull-right
+                                    li
+                                        a(href, ui-sref="logout")
+                                            i.fa.fa-key
+                                            | Log Out
+            // END TOPBAR
+            #wrapper
+                // BEGIN SIDEBAR MENU
+                nav#sidebar.navbar-default.navbar-static-side(role='navigation')
+                    .sidebar-collapse.menu-scroll
+                        ul#side-menu.nav
+                            li.user-panel
+                                .thumb
+                                    img.img-circle(src='/images/me.jpg', alt='')
+                                .info
+                                    p Carl Ngan
+                                    ul.list-inline.list-unstyled
+                                        li
+                                            a(href, ui-sref="logout" data-hover='tooltip', title='Logout')
+                                                i.fa.fa-sign-out
+                                .clearfix
+                            li.active
+                                a(href, ui-sref="claims")
+                                    i.fa.fa-tachometer.fa-fw
+                                        .icon-bg.bg-orange
+                                    span.menu-title Claims
+                // END SIDEBAR MENU
+                // BEGIN PAGE WRAPPER
+                #page-wrapper
+                    ui-view
+                // BEGIN FOOTER
+                #footer
+                    .copyright 2016 © Carl Ngan - Interview
+                // END FOOTER
+                // END PAGE WRAPPER
+
+        script(src='/bower/jquery/dist/jquery.min.js')
+        script(src='/bower/jquery-migrate/jquery-migrate.min.js')
+        script(src='/bower/jquery-ui/jquery-ui.min.js')
+
+        //
+          loading bootstrap js
+        script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
+        script(src='/vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js')
+        script(src='/js/html5shiv.js')
+        script(src='/js/respond.min.js')
+        script(src='/bower/metisMenu/dist/metisMenu.min.js')
+
+        script(src='/vendors/slimScroll/jquery.slimscroll.js')
+        script(src='/vendors/jquery-cookie/jquery.cookie.js')
+        script(src='/vendors/iCheck/icheck.min.js')
+        script(src='/vendors/iCheck/custom.min.js')
+        script(src='/vendors/jquery-notific8/jquery.notific8.min.js')
+        script(src='/vendors/jquery-highcharts/highcharts.js')
+        //script(src='/js/jquery.menu.js')
+        script(src='/vendors/holder/holder.js')
+        script(src='/vendors/responsive-tabs/responsive-tabs.js')
+        //script(src='/vendors/jquery-news-ticker/jquery.newsTicker.min.js')
+
+
+
+        //
+          CORE JAVASCRIPT
+        script(src='/js/main.js')
+
+        //ANGULAR - REQUIREJS
+        script(src='/bower/angular/angular.min.js')
+        script(src='/bower/ng-file-upload/ng-file-upload-shim.js')
+        script(src='/bower/ng-file-upload/ng-file-upload.js')
+        //script(src='/app/controllers/MurchantService.js')
+        //script(src='/bower/angular-route/angular-route.min.js')
+        script(src='/bower/angular-bootstrap/ui-bootstrap.min.js')
+        script(src='/bower/angular-bootstrap/ui-bootstrap-tpls.min.js')
+        //script(src='/bower/angular-bootstrap-switch/src/directives/bsSwitch.js')
+        script(src='/bower/angular-ui-router/release/angular-ui-router.min.js')
+        script(type="text/javascript",src="/bower/moment/min/moment-with-locales.min.js")
+        //script(src='/js/moment-timezone-with-data.js')
+        //script(src='/bower/angular-resource/angular-resource.min.js')
+        //script(src='/bower/requirejs/require.js')
+        script(src='/bower/ocLazyLoad/dist/ocLazyLoad.min.js')
+        //script(src='https://rawgit.com/ocombe/ocLazyLoad/master/dist/ocLazyLoad.js')
+        //script(src='/app/routes.js')
+        //script(src='/app/services/MediaService.js')
+        //script(src='/js/customImagePreview.js')
+        script(src='/bower/angular-numeraljs/dist/angular-numeraljs.min.js')
+        script(src="/bower/numeral/min/numeral.min.js")
+        script(src='/bower/angular-loading-bar/src/loading-bar.js')
+
+        //script(src='/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js')
+        //script(src='/vendors/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js')
+        //script(src='/vendors/bootstrap-daterangepicker/daterangepicker.js')
+        //script(src='/vendors/image-picker/image-picker.min.js')
+        script(src='/vendors/ckeditor/ckeditor.js')
+
+
+        script(src='/js/JQuery.xml2json.js')
+        script(src='/js/angular-app.js')
+
+        //script(src='/app/controllers.js')
+        //script(src='/app/routes.js')
+        //script(src='/app/controllers/MainCtrl.js')
+        //script(src='/app/controllers/NerdCtrl.js')
+        //script(src='/app/controllers/MediaCtrl.js')
+        //script(src='/app/services/NerdService.js')
+        //
+          LOADING SCRIPTS FOR PAGE
+        //script(src='/vendors/intro.js/intro.js')
+        //script(src='/vendors/flot-chart/jquery.flot.js')
+        //script(src='/vendors/flot-chart/jquery.flot.categories.js')
+        //script(src='/vendors/flot-chart/jquery.flot.pie.js')
+        //script(src='/vendors/flot-chart/jquery.flot.tooltip.js')
+        //script(src='/vendors/flot-chart/jquery.flot.resize.js')
+        //script(src='/vendors/flot-chart/jquery.flot.fillbetween.js')
+        //script(src='/vendors/flot-chart/jquery.flot.stack.js')
+        //script(src='/vendors/flot-chart/jquery.flot.spline.js')
+        //script(src='/vendors/calendar/zabuto_calendar.min.js')
+        //script(src='/vendors/sco.message/sco.message.js')
+
+        script(src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js")
+        script(src="/bower/async/dist/async.min.js")
+        //script(src='/vendors/intro.js/intro.js')
+        //script(src='/js/index.js')
+
+
+
+        //script(src='/bower/jquery/dist/jquery.min.js')
+        //script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
+        //script(src='/bower/async/dist/async.min.js')
+        //script(src='js/jquery-migrate-1.2.1.min.js')
+        //script(src='js/jquery-ui.js')
+        //script(type="text/javascript",src="/bower/angular/angular.min.js")
+        //script(type="text/javascript",src="/bower/ocLazyLoad/dist/ocLazyLoad.min.js")
+        //script(src='/bower/angular-bootstrap/ui-bootstrap.min.js')
+        //script(src='/bower/angular-bootstrap/ui-bootstrap-tpls.min.js')
+        //
+        //// loading bootstrap js
+        //script(src='vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js')
+        //script(src='js/html5shiv.js')
+        //script(src='js/respond.min.js')
+        //script(src='vendors/metisMenu/jquery.metisMenu.js')
+        //script(src='vendors/slimScroll/jquery.slimscroll.js')
+        //script(src='vendors/jquery-cookie/jquery.cookie.js')
+        //script(src='vendors/iCheck/icheck.min.js')
+        //script(src='vendors/iCheck/custom.min.js')
+        //script(src='vendors/jquery-notific8/jquery.notific8.min.js')
+        //script(src='vendors/jquery-highcharts/highcharts.js')
+        //script(src='js/jquery.menu.js')
+        //script(src='vendors/jquery-pace/pace.min.js')
+        //script(src='vendors/holder/holder.js')
+        //script(src='vendors/responsive-tabs/responsive-tabs.js')
+        //script(src='vendors/jquery-news-ticker/jquery.newsTicker.min.js')
+        //
+        //// CORE JAVASCRIPT
+        //script(src='js/main.js')
+        //// LOADING SCRIPTS FOR PAGE
+        //
+        //
+        //script(type="text/javascript",src="/bower/ng-file-upload/ng-file-upload.min.js")
+        //script(type="text/javascript",src="/bower/angular-loading-bar/src/loading-bar.js")
+        //script(type="text/javascript",src="/bower/angular-ui-router/release/angular-ui-router.min.js")
+        //script(type="text/javascript",src="/bower/angular-local-storage/dist/angular-local-storage.min.js")
+        //script(type="text/javascript",src="/js/angular-app.js")
+        // LOADING SCRIPTS FOR PAGE
+        script(src='vendors/bootstrap-datepicker/js/bootstrap-datepicker.js')
+        script(src='vendors/bootstrap-daterangepicker/daterangepicker.js')
+        script(src='vendors/moment/moment.js')
+        script(src='vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
+        script(src='vendors/bootstrap-timepicker/js/bootstrap-timepicker.js')
+        script(src='vendors/bootstrap-clockface/js/clockface.js')
+        //script(src='vendors/bootstrap-colorpicker/js/bootstrap-colorpicker.js')
+        script(src='vendors/bootstrap-switch/js/bootstrap-switch.min.js')
+        //script(src='vendors/jquery-maskedinput/jquery-maskedinput.js')
+        script(src='vendors/charCount.js')
+        //script(src='js/form-components.js')

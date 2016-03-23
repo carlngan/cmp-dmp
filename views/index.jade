@@ -1,0 +1,514 @@
+doctype html
+html(lang='en')
+    head
+        title Fourtify Admin Panel
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='cache-control', content='no-cache')
+        meta(http-equiv='expires', content='Thu, 19 Nov 1900 08:52:00 GMT')
+        link(rel='shortcut icon', href='images/icons/favicon.ico')
+        link(rel='apple-touch-icon', href='images/icons/favicon.png')
+        link(rel='apple-touch-icon', sizes='72x72', href='images/icons/favicon-72x72.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='images/icons/favicon-114x114.png')
+        // Loading bootstrap css
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700')
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Oswald:400,700,300')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/font-awesome/css/font-awesome.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap/css/bootstrap.min.css')
+        // LOADING STYLESHEET FOR PAGE
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        link(type='text/css', rel='stylesheet', href='vendors/calendar/zabuto_calendar.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/sco.message/sco.message.css')
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        // Loading style vendors
+        link(type='text/css', rel='stylesheet', href='vendors/animate.css/animate.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-pace/pace.css')
+        link(type='text/css', rel='stylesheet', href='vendors/iCheck/skins/all.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-notific8/jquery.notific8.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-daterangepicker/daterangepicker-bs3.css')
+        // Loading style
+        link.default-style(type='text/css', rel='stylesheet', href='css/themes/style1/blue-grey.css')
+        link(type='text/css', rel='stylesheet', href='css/style-responsive.css')
+    body
+        div
+            // BEGIN BACK TO TOP
+            a#totop(href='#')
+                i.fa.fa-angle-up
+            // END BACK TO TOP
+            // BEGIN TOPBAR
+            #header-topbar-option-demo.page-header-topbar
+                nav#topbar.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0; z-index: 2;')
+                    .navbar-header
+                        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.sidebar-collapse')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a#logo.navbar-brand(href='/')
+                            span.fa.fa-rocket
+                            span.logo-text Fourtify
+                            span.logo-text-icon(style='display: none') F
+                    .topbar-main
+                        a#menu-toggle.hidden-xs(href='#')
+                            i.fa.fa-bars
+                        ul.nav.navbar-nav
+                            li.active
+                                a(href='/dashboard') Dashboard
+                            li
+                                a(href='/providers') Providers
+                        form#topbar-search.hidden-xs(action='#', method='GET')
+                            .input-group
+                                input.form-control(type='text', placeholder='Search...')
+                                span.input-group-btn
+                                    a.btn.submit(href='javascript:;')
+                                        i.fa.fa-search
+                        ul.nav.navbar.navbar-top-links.navbar-right.mbn
+                            li.dropdown.topbar-user
+                                a.dropdown-toggle(data-hover='dropdown', href='#')
+                                    img.img-responsive.img-circle(src='https://cdn.pint.com/assets/000/000/000/056.png', alt='')
+                                    span.hidden-xs Peter Venkman
+                                    span.caret
+                                ul.dropdown-menu.dropdown-user.pull-right
+                                    li
+                                        a(href='/login')
+                                            i.fa.fa-key
+                                            | Log Out
+            // END TOPBAR
+            #wrapper
+                // BEGIN SIDEBAR MENU
+                nav#sidebar.navbar-default.navbar-static-side(role='navigation')
+                    .sidebar-collapse.menu-scroll
+                        ul#side-menu.nav
+                            li.user-panel
+                                .thumb
+                                    img.img-circle(src='https://cdn.pint.com/assets/000/000/000/056.png', alt='')
+                                .info
+                                    p Peter Venkman
+                                    ul.list-inline.list-unstyled
+                                        li
+                                            a(href='/login', data-hover='tooltip', title='Logout')
+                                                i.fa.fa-sign-out
+                                .clearfix
+                            li.active
+                                a(href='/dashboard')
+                                    i.fa.fa-tachometer.fa-fw
+                                        .icon-bg.bg-orange
+                                    span.menu-title Dashboard
+                            li
+                                a(href='/providers')
+                                    i.fa.fa-laptop.fa-fw
+                                        .icon-bg.bg-orange
+                                    span.menu-title Providers
+                // END SIDEBAR MENU
+                // BEGIN PAGE WRAPPER
+                #page-wrapper
+                    // BEGIN CONTENT
+                    .page-content
+                        #tab-general
+                            #sum_box.row.mbl
+                                .col-sm-6.col-md-3
+                                    .panel.profit.db.mbm
+                                        .panel-body
+                                            p.icon
+                                                i.icon.fa.fa-shopping-cart
+                                            h4.value
+                                                span(data-counter='', data-start='10', data-end='70', data-step='1', data-duration='0')
+                                            p.description Leads Converted (this month)
+                                            .progress.progress-sm.mbn
+                                                .progress-bar.progress-bar-success(role='progressbar', aria-valuenow='80', aria-valuemin='0', aria-valuemax='100', style='width: 80%;')
+                                                    span.sr-only 80% Complete (success)
+                                .col-sm-6.col-md-3
+                                    .panel.income.db.mbm
+                                        .panel-body
+                                            p.icon
+                                                i.icon.fa.fa-money
+                                            h4.value
+                                                span 215
+                                                span $
+                                            p.description Income Generated (this month)
+                                            .progress.progress-sm.mbn
+                                                .progress-bar.progress-bar-info(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 60%;')
+                                                    span.sr-only 60% Complete (success)
+                                .col-sm-6.col-md-3
+                                    .panel.task.db.mbm
+                                        .panel-body
+                                            p.icon
+                                                i.icon.fa.fa-signal
+                                            h4.value
+                                                span 215
+                                            p.description Sales Agents
+                                            .progress.progress-sm.mbn
+                                                .progress-bar.progress-bar-danger(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width: 50%;')
+                                                    span.sr-only 50% Complete (success)
+                                .col-sm-6.col-md-3
+                                    .panel.visit.db.mbm
+                                        .panel-body
+                                            p.icon
+                                                i.icon.fa.fa-group
+                                            h4.value
+                                                span 128
+                                            p.description Subscribers
+                                            .progress.progress-sm.mbn
+                                                .progress-bar.progress-bar-warning(role='progressbar', aria-valuenow='70', aria-valuemin='0', aria-valuemax='100', style='width: 70%;')
+                                                    span.sr-only 70% Complete (success)
+                            .row.mbl
+                                .col-lg-12
+                                    .panel
+                                        .panel-body
+                                            .row
+                                                .col-md-8
+                                                    h4.mbs.text-uppercase Market Performance
+                                                    p.help-block
+                                                        | How your sales reps are engaging with leads...
+                                                    #area-chart-spline(style='width: 100%; height:300px')
+                                                .col-md-4
+                                                    h4.mbm.text-uppercase % Engagement
+                                                    span.task-item
+                                                        | Radio
+                                                        small.pull-right.text-muted
+                                                            | 40%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-orange(role='progressbar', aria-valuenow='40', aria-valuemin='0', aria-valuemax='100', style='width: 40%;')
+                                                                span.sr-only 40% Complete (success)
+                                                    span
+                                                        | Television
+                                                        small.pull-right.text-muted
+                                                            | 60%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-blue(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 60%;')
+                                                                span.sr-only 60% Complete (success)
+                                                    span
+                                                        | Magazine
+                                                        small.pull-right.text-muted
+                                                            | 55%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-green(role='progressbar', aria-valuenow='55', aria-valuemin='0', aria-valuemax='100', style='width: 55%;')
+                                                                span.sr-only 55% Complete (success)
+                                                    span
+                                                        | 3rd Party PPC
+                                                        small.pull-right.text-muted 66%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-yellow(role='progressbar', aria-valuenow='66', aria-valuemin='0', aria-valuemax='100', style='width: 66%;')
+                                                                span.sr-only 66% Complete (success)
+                                                    span
+                                                        | Social Media
+                                                        small.pull-right.text-muted
+                                                            | 90%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-pink(role='progressbar', aria-valuenow='90', aria-valuemin='0', aria-valuemax='100', style='width: 90%;')
+                                                                span.sr-only 90% Complete (success)
+                                                    span
+                                                        | Google Adwords
+                                                        small.pull-right.text-muted
+                                                            | 50%
+                                                        .progress.progress-sm
+                                                            .progress-bar.progress-bar-violet(role='progressbar', aria-valuenow='50', aria-valuemin='0', aria-valuemax='100', style='width: 50%;')
+                                                                span.sr-only 50% Complete (success)
+                                //-.col-lg-4
+                                    .portlet.box.prolet-primary
+                                        .portlet-header
+                                            .caption.text-uppercase
+                                                i.fa.fa-comments(style='font-size: 17px; margin-top: 2px;')
+                                                | Chats
+                                        .portlet-body
+                                            .chat-scroller
+                                                ul.chats
+                                                    li.in
+                                                        img.avatar.img-responsive(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg')
+                                                        .message
+                                                            span.chat-arrow
+                                                            a.chat-name(href='#') Admin
+                                                            span.chat-datetime at July 06, 2014 17:06
+                                                            span.chat-body
+                                                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                                                    li.out
+                                                        img.avatar.img-responsive(src='https://s3.amazonaws.com/uifaces/faces/twitter/mijustin/128.jpg')
+                                                        .message
+                                                            span.chat-arrow
+                                                            a.chat-name(href='#') Admin
+                                                            span.chat-datetime at July 06, 2014 18:06
+                                                            span.chat-body
+                                                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                                                    li.in
+                                                        img.avatar.img-responsive(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg')
+                                                        .message
+                                                            span.chat-arrow
+                                                            a.chat-name(href='#') Admin
+                                                            span.chat-datetime at July 06, 2014 17:06
+                                                            span.chat-body
+                                                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                                                    li.out
+                                                        img.avatar.img-responsive(src='https://s3.amazonaws.com/uifaces/faces/twitter/mijustin/128.jpg')
+                                                        .message
+                                                            span.chat-arrow
+                                                            a.chat-name(href='#') Admin
+                                                            span.chat-datetime at July 06, 2014 18:06
+                                                            span.chat-body
+                                                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                                                    li.in
+                                                        img.avatar.img-responsive(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/48.jpg')
+                                                        .message
+                                                            span.chat-arrow
+                                                            a.chat-name(href='#') Admin
+                                                            span.chat-datetime at July 06, 2014 17:06
+                                                            span.chat-body
+                                                                | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                                            .chat-form
+                                                .input-group
+                                                    input#input-chat.form-control(type='text', placeholder='Type a message here...')
+                                                    span#btn-chat.input-group-btn
+                                                        button.btn.btn-green(type='button')
+                                                            i.fa.fa-check
+                            //-.row.mbl
+                                .col-md-4
+                                    .panel
+                                        .panel-body.pan
+                                            .profile
+                                                .user-info
+                                                    .row(style='margin-bottom: 15px')
+                                                        .col-xs-12.col-sm-8
+                                                            h2 John Doe
+                                                            p
+                                                                strong About:
+                                                                |  Web Designer / UI.
+                                                            p
+                                                                strong Hobbies:
+                                                                |  Read, out with friends, listen to
+                                                                |                                                         music, draw and learn new things.
+                                                            p
+                                                                strong.mrs Skills:
+                                                                span.label.label-green.mrs html5
+                                                                span.label.label-green.mrs css3
+                                                                span.label.label-green.mrs jquery
+                                                        .col-xs-12.col-sm-4.text-center
+                                                            figure
+                                                                img.img-responsive.img-circle(src='https://s3.amazonaws.com/uifaces/faces/twitter/kolage/128.jpg', alt='', style='display: inline-block')
+                                                                figcaption.ratings
+                                                                    p
+                                                                        a(href='#')
+                                                                            span.fa.fa-star
+                                                                        a(href='#')
+                                                                            span.fa.fa-star
+                                                                        a(href='#')
+                                                                            span.fa.fa-star
+                                                                        a(href='#')
+                                                                            span.fa.fa-star
+                                                                        a(href='#')
+                                                                            span.fa.fa-star-o
+                                                .user-action
+                                                    .row.text-center.divider
+                                                        .col-xs-12.col-sm-4.emphasis
+                                                            h2
+                                                                strong  20,7K
+                                                            p
+                                                                small Followers
+                                                            button.btn.btn-yellow.btn-block Follow
+                                                        .col-xs-12.col-sm-4.emphasis
+                                                            h2
+                                                                strong 43
+                                                            p
+                                                                small Snippets
+                                                            .btn-group.dropdown
+                                                                button.btn.btn-orange.dropdown-toggle(type='button', data-toggle='dropdown')
+                                                                    | Options 
+                                                                    i.fa.fa-angle-down
+                                                                ul.dropdown-menu.text-left(role='menu')
+                                                                    li
+                                                                        a(href='#')
+                                                                            span.fa.fa-envelope
+                                                                            |                                                                 Send an email
+                                                                    li
+                                                                        a(href='#')
+                                                                            span.fa.fa-list
+                                                                            |                                                                 Add or remove from a list
+                                                                    li.divider
+                                                                    li
+                                                                        a(href='#')
+                                                                            span.fa.fa-warning
+                                                                            |                                                                 Report this user for spam
+                                                        .col-xs-12.col-sm-4.emphasis
+                                                            h2
+                                                                strong 245
+                                                            p
+                                                                small Following
+                                                            button.btn.btn-blue.btn-block Profile
+                                .col-md-8
+                                    .portlet.box
+                                        .portlet-header.prolet-primary
+                                            .caption.text-uppercase
+                                                i.fa.fa-list-alt(style='font-size: 17px; margin-top: 2px;')
+                                                | Todo List
+                                        .portlet-body(style='overflow: hidden;')
+                                            ul.todo-list.sortable
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title Sed ut perspiciatis unde omnis iste
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title
+                                                        | At vero eos et accusamus et iusto odio dignissimos
+                                                        | ducimus qui blanditiis praesentium
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title
+                                                        | Nam libero tempore, cum soluta nobis est eligendi
+                                                        | optio cumque nihil impedit quo minus id
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title Et harum quidem rerum facilis est
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title
+                                                        | Neque porro quisquam est, qui dolorem ipsum quia
+                                                        | dolor sit amet
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                                                li.clearfix
+                                                    span.drag-drop
+                                                        i
+                                                    .todo-check.pull-left
+                                                        input(type='checkbox', value='')
+                                                    .todo-title Excepteur sint occaecat cupidatat non proident
+                                                    .todo-actions.pull-right.clearfix
+                                                        a.todo-complete(href='#')
+                                                            i.fa.fa-check
+                                                        a.todo-edit(href='#')
+                                                            i.fa.fa-edit
+                                                        a.todo-remove(href='#')
+                                                            i.fa.fa-trash-o
+                            .row.mtxl
+                                .col-lg-8
+                                    .timeline-centered.timeline-sm
+                                        article.timeline-entry
+                                            .timeline-entry-inner
+                                                time.timeline-time(datetime='2014-01-10T03:45')
+                                                    span 12:45 AM
+                                                    span Today
+                                                .timeline-icon.bg-violet
+                                                    i.fa.fa-exclamation
+                                                .timeline-label
+                                                    h4.timeline-title New Subscriber
+                                                    p
+                                                        | Mark Fuckerberg from Faceblock has signed up for a free trial
+                                        article.timeline-entry.left-aligned
+                                            .timeline-entry-inner
+                                                time.timeline-time(datetime='2014-01-10T03:45')
+                                                    span 9:15 AM
+                                                    span Today
+                                                .timeline-icon.bg-green
+                                                    i.fa.fa-group
+                                                .timeline-label
+                                                    h4.timeline-title New Subscriber
+                                                    p
+                                                        | Predeep Khosla from UCSD has signed up for a free trial
+                                        article.timeline-entry
+                                            .timeline-entry-inner
+                                                time.timeline-time(datetime='2014-01-09T13:22')
+                                                    span 8:20 PM
+                                                    span Yesterday
+                                                .timeline-icon.bg-orange
+                                                    i.fa.fa-paper-plane
+                                                .timeline-label
+                                                    h4.timeline-title New Subscriber
+                                                    p
+                                                        | Ben Dover from Playboy has signed up for a free trial
+                                            .timeline-entry-inner
+                                                .timeline-icon(style='-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);')
+                                                    i.fa.fa-plus
+                                .col-lg-4
+                                    #my-calendar
+                    // END CONTENT
+                // BEGIN FOOTER
+                #footer
+                    .copyright 2016 © Fourtify - CSE 112
+                // END FOOTER
+                // END PAGE WRAPPER
+        script(src='js/jquery-1.10.2.min.js')
+        script(src='js/jquery-migrate-1.2.1.min.js')
+        script(src='js/jquery-ui.js')
+        // loading bootstrap js
+        script(src='vendors/bootstrap/js/bootstrap.min.js')
+        script(src='vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js')
+        script(src='js/html5shiv.js')
+        script(src='js/respond.min.js')
+        script(src='vendors/metisMenu/jquery.metisMenu.js')
+        script(src='vendors/slimScroll/jquery.slimscroll.js')
+        script(src='vendors/jquery-cookie/jquery.cookie.js')
+        script(src='vendors/iCheck/icheck.min.js')
+        script(src='vendors/iCheck/custom.min.js')
+        script(src='vendors/jquery-notific8/jquery.notific8.min.js')
+        script(src='vendors/jquery-highcharts/highcharts.js')
+        script(src='js/jquery.menu.js')
+        script(src='vendors/jquery-pace/pace.min.js')
+        script(src='vendors/holder/holder.js')
+        script(src='vendors/responsive-tabs/responsive-tabs.js')
+        script(src='vendors/jquery-news-ticker/jquery.newsTicker.min.js')
+        script(src='vendors/moment/moment.js')
+        script(src='vendors/bootstrap-datepicker/js/bootstrap-datepicker.js')
+        script(src='vendors/bootstrap-daterangepicker/daterangepicker.js')
+        // CORE JAVASCRIPT
+        script(src='js/main.js')
+        // LOADING SCRIPTS FOR PAGE
+        script(src='vendors/intro.js/intro.js')
+        script(src='vendors/flot-chart/jquery.flot.js')
+        script(src='vendors/flot-chart/jquery.flot.categories.js')
+        script(src='vendors/flot-chart/jquery.flot.pie.js')
+        script(src='vendors/flot-chart/jquery.flot.tooltip.js')
+        script(src='vendors/flot-chart/jquery.flot.resize.js')
+        script(src='vendors/flot-chart/jquery.flot.fillbetween.js')
+        script(src='vendors/flot-chart/jquery.flot.stack.js')
+        script(src='vendors/flot-chart/jquery.flot.spline.js')
+        script(src='vendors/calendar/zabuto_calendar.min.js')
+        script(src='vendors/sco.message/sco.message.js')
+        script(src='vendors/intro.js/intro.js')
+        script(src='js/index.js')

@@ -1,0 +1,129 @@
+.modal-header
+    button.close(type="button", ng-click='cancel()')
+        span(aria-hidden="true") &#215;
+    h4.modal-title Update Staff
+.modal-body
+    form
+        .container-fluid
+            .row
+                //- STAFF PROFILE INFORMATION
+                .panel.panel-primary
+                    .panel-heading
+                        h3.panel-title Staff Profile Information
+                    .panel-body
+                        .row
+                            //- FIRST & LAST NAME
+                            .col-xs-12.col-sm-6.form-group.required
+                                label.control-label(for='name.first') First Name
+                                input.form-control(type='text', placeholder='First', id="name.first", ng-model="name.first")
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='name.last') Last Name
+                                input.form-control(type='text', placeholder='Last', id="name.last", ng-model="name.last")
+
+                            //- EMAIL
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='email') Email
+                                input.form-control(type='text', placeholder='email@domain.com', id="email", ng-model="email")
+
+                            //- GENDER
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='gender') Gender
+                                select.form-control(name="gender", ng-model="gender")
+                                    option(value="", selected, disabled) Gender
+                                    option(value="male") Male
+                                    option(value="female") Female
+                                
+                            //- DATE OF BIRTH
+                            .col-xs-12.col-sm-4.form-group
+                                label.control-label(for="dobMonth") Date of Birth
+                                select.form-control(name="dobMonth", ng-model="dob.month", ng-options="month.value as month.name for month in dobOpts.months")
+                                    option(value="", selected, disabled) Month
+                            .col-xs-12.col-sm-4.form-group
+                                label &nbsp;
+                                select.form-control(name="dobDay", ng-model="dob.day", ng-options="day for day in dobOpts.days")
+                                    option(value="", selected, disabled) Day
+                            .col-xs-12.col-sm-4.form-group
+                                label &nbsp;
+                                select.form-control(name="dobYear", ng-model="dob.year", ng-options="year for year in dobOpts.years")
+                                    option(value="", selected, disabled) Year
+                
+                //- STAFF ADDRESS
+                //-.panel.panel-default
+                    .panel-heading.expandable(ng-click="isCollapsedStaffAddress = !isCollapsedStaffAddress", style="cursor: pointer;")
+                        h3.panel-title
+                            | Phone(s) and Address(es)
+                            .pull-right Click to expand
+                    .panel-body(uib-collapse="isCollapsedStaffAddress")
+                        .row
+                            //- PHONE
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='phoneType') Phone
+                                select.form-control(name="phoneType", ng-model="phone.type")
+                                    option(value="Mobile", selected) Mobile
+                                    option(value="Home") Home
+                                    option(value="Work") Work
+                            .col-xs-12.col-sm-6.form-group
+                                label &nbsp;
+                                input.form-control(type='text', name="phone", placeholder='(123) 456-7890', id="phoneNumber", ng-model="phone.number")
+                            //-ADDRESSES
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='address.street') Street Address
+                                input.form-control(type='text', placeholder='123 First St.', id="address.street", ng-model="address.street")
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='address.city') City
+                                input.form-control(type='text', placeholder='San Diego', id="address.city", ng-model="address.city")
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='address.state') State
+                                input.form-control(type='text', placeholder='CA', id="address.state", ng-model="address.state")
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='address.zip') Zip (Numbers Only)
+                                input.form-control(type='text', placeholder='92092', id="address.zip", ng-model="address.zip")
+                //- GROUPS
+                .panel.panel-primary
+                    .panel-heading
+                        h3.panel-title Groups
+                    .panel-body
+                        .row
+                            .col-xs-12
+                                .well
+                                    h6 Users have to manually refresh their page to reflect new privileges.
+                        br
+                        .row            
+                            .col-xs-12
+                                .image-select-table
+                                    .table-responsive.disable
+                                        table.table.table-hover.table-striped.table-bordered.table-advanced.tablesorter.neat-table
+                                            thead
+                                                tr.condensed
+                                                    th
+                                                        .icheckbox_minimal-grey(style='position: relative;')
+                                                            input.checkall(type='checkbox')
+                                                            ins.iCheck-helper
+                                                    th Name
+                                                    th Count
+                                            tbody.media-thumb
+                                                tr(ng-repeat="group in groups")
+                                                    td
+                                                        .icheckbox_minimal-grey(ng-class="{checked: selectedGroups.indexOf(group._id) !== -1}", ng-click="selectGroup(group._id)", style='position: relative;')
+                                                            ins.iCheck-helper
+                                                    td {{group._title}}
+                                                    td {{group._staff.length}}
+                                                    
+                                                    
+                .col-xs-12
+                    .alert.alert-dismissable.alert-danger.register-fail(ng-if="err", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{err._code}}: {{err._msg}}
+                    .alert.alert-dismissable.alert-success(ng-if="success", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{success._msg}}
+                    .alert.alert-dismissable.alert-info(ng-if="pending", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{pending._msg}}
+                        
+.modal-footer
+    button.btn.btn-default(type="button", ng-click='cancel()') Close
+    button.btn.btn-blue(type="button", ng-click='updateFormProcess()') Update

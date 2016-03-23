@@ -1,0 +1,178 @@
+doctype html
+html(lang='en')
+    head
+        title Fourtify Admin Panel
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='cache-control', content='no-cache')
+        meta(http-equiv='expires', content='Thu, 19 Nov 1900 08:52:00 GMT')
+        link(rel='shortcut icon', href='images/icons/favicon.ico')
+        link(rel='apple-touch-icon', href='images/icons/favicon.png')
+        link(rel='apple-touch-icon', sizes='72x72', href='images/icons/favicon-72x72.png')
+        link(rel='apple-touch-icon', sizes='114x114', href='images/icons/favicon-114x114.png')
+        // Loading bootstrap css
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700')
+        link(type='text/css', rel='stylesheet', href='http://fonts.googleapis.com/css?family=Oswald:400,700,300')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/font-awesome/css/font-awesome.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap/css/bootstrap.min.css')
+        // LOADING STYLESHEET FOR PAGE
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        link(type='text/css', rel='stylesheet', href='vendors/calendar/zabuto_calendar.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/sco.message/sco.message.css')
+        link(type='text/css', rel='stylesheet', href='vendors/intro.js/introjs.css')
+        // Loading style vendors
+        link(type='text/css', rel='stylesheet', href='vendors/animate.css/animate.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-pace/pace.css')
+        link(type='text/css', rel='stylesheet', href='vendors/iCheck/skins/all.css')
+        link(type='text/css', rel='stylesheet', href='vendors/jquery-notific8/jquery.notific8.min.css')
+        link(type='text/css', rel='stylesheet', href='vendors/bootstrap-daterangepicker/daterangepicker-bs3.css')
+        // Loading style
+        link.default-style(type='text/css', rel='stylesheet', href='css/themes/style1/blue-grey.css')
+        link(type='text/css', rel='stylesheet', href='css/style-responsive.css')
+    body
+        div
+            // BEGIN BACK TO TOP
+            a#totop(href='#')
+                i.fa.fa-angle-up
+            // END BACK TO TOP
+            // BEGIN TOPBAR
+            #header-topbar-option-demo.page-header-topbar
+                nav#topbar.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0; z-index: 2;')
+                    .navbar-header
+                        button.navbar-toggle(type='button', data-toggle='collapse', data-target='.sidebar-collapse')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a#logo.navbar-brand(href='/')
+                            span.fa.fa-rocket
+                            span.logo-text Fourtify
+                            span.logo-text-icon(style='display: none') F
+                    .topbar-main
+                        a#menu-toggle.hidden-xs(href='#')
+                            i.fa.fa-bars
+                        ul.nav.navbar-nav
+                            li
+                                a(href='/dashboard') Dashboard
+                            li.active
+                                a(href='/providers') Providers
+                        form#topbar-search.hidden-xs(action='#', method='GET')
+                            .input-group
+                                input.form-control(type='text', placeholder='Search...')
+                                span.input-group-btn
+                                    a.btn.submit(href='javascript:;')
+                                        i.fa.fa-search
+                        ul.nav.navbar.navbar-top-links.navbar-right.mbn
+                            li.dropdown.topbar-user
+                                a.dropdown-toggle(data-hover='dropdown', href='#')
+                                    img.img-responsive.img-circle(src='https://cdn.pint.com/assets/000/000/000/056.png', alt='')
+                                    span.hidden-xs Peter Venkman
+                                    span.caret
+                                ul.dropdown-menu.dropdown-user.pull-right
+                                    li
+                                        a(href='/login')
+                                            i.fa.fa-key
+                                            | Log Out
+            // END TOPBAR
+            #wrapper
+                // BEGIN SIDEBAR MENU
+                nav#sidebar.navbar-default.navbar-static-side(role='navigation')
+                    .sidebar-collapse.menu-scroll
+                        ul#side-menu.nav
+                            li.user-panel
+                                .thumb
+                                    img.img-circle(src='https://cdn.pint.com/assets/000/000/000/056.png', alt='')
+                                .info
+                                    p Peter Venkman
+                                    ul.list-inline.list-unstyled
+                                        li
+                                            a(href='/login', data-hover='tooltip', title='Logout')
+                                                i.fa.fa-sign-out
+                                .clearfix
+                            li
+                                a(href='/dashboard')
+                                    i.fa.fa-tachometer.fa-fw
+                                        .icon-bg.bg-orange
+                                    span.menu-title Dashboard
+                            li.active
+                                a(href='/providers')
+                                    i.fa.fa-laptop.fa-fw
+                                        .icon-bg.bg-orange
+                                    span.menu-title Providers
+                // END SIDEBAR MENU
+                // BEGIN PAGE WRAPPER
+                #page-wrapper
+                    // BEGIN CONTENT
+                    .page-content
+                        .col-md-12
+                            .panel.panel-violet
+                                .panel-heading Providers
+                                .panel-body
+                                    table.table.table-hover.table-striped
+                                        thead
+                                            tr
+                                                th #
+                                                th Company Name
+                                                th Domain
+                                                th Status
+                                                th Actions
+                                        tbody
+                                            each provider in providers
+                                                tr
+                                                    td #{provider._id}
+                                                    td
+                                                        a #{provider._name}
+                                                    td
+                                                        a(href="http://#{provider._domain}.fourtify.us", target="_blank") #{provider._domain}.fourtify.us
+                                                    td
+                                                        span.label.label-sm.label-success #{provider._status}
+                                                    td
+                                                        .btn.btn-primary.btn-sm Edit
+                                                        .btn.btn-danger.btn-sm Delete
+                    // END CONTENT
+                // BEGIN FOOTER
+                #footer
+                    .copyright 2016 © Fourtify - CSE 112
+                // END FOOTER
+                // END PAGE WRAPPER
+        script(src='js/jquery-1.10.2.min.js')
+        script(src='js/jquery-migrate-1.2.1.min.js')
+        script(src='js/jquery-ui.js')
+        // loading bootstrap js
+        script(src='vendors/bootstrap/js/bootstrap.min.js')
+        script(src='vendors/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js')
+        script(src='js/html5shiv.js')
+        script(src='js/respond.min.js')
+        script(src='vendors/metisMenu/jquery.metisMenu.js')
+        script(src='vendors/slimScroll/jquery.slimscroll.js')
+        script(src='vendors/jquery-cookie/jquery.cookie.js')
+        script(src='vendors/iCheck/icheck.min.js')
+        script(src='vendors/iCheck/custom.min.js')
+        script(src='vendors/jquery-notific8/jquery.notific8.min.js')
+        script(src='vendors/jquery-highcharts/highcharts.js')
+        script(src='js/jquery.menu.js')
+        script(src='vendors/jquery-pace/pace.min.js')
+        script(src='vendors/holder/holder.js')
+        script(src='vendors/responsive-tabs/responsive-tabs.js')
+        script(src='vendors/jquery-news-ticker/jquery.newsTicker.min.js')
+        script(src='vendors/moment/moment.js')
+        script(src='vendors/bootstrap-datepicker/js/bootstrap-datepicker.js')
+        script(src='vendors/bootstrap-daterangepicker/daterangepicker.js')
+        // CORE JAVASCRIPT
+        script(src='js/main.js')
+        // LOADING SCRIPTS FOR PAGE
+        script(src='vendors/intro.js/intro.js')
+        script(src='vendors/flot-chart/jquery.flot.js')
+        script(src='vendors/flot-chart/jquery.flot.categories.js')
+        script(src='vendors/flot-chart/jquery.flot.pie.js')
+        script(src='vendors/flot-chart/jquery.flot.tooltip.js')
+        script(src='vendors/flot-chart/jquery.flot.resize.js')
+        script(src='vendors/flot-chart/jquery.flot.fillbetween.js')
+        script(src='vendors/flot-chart/jquery.flot.stack.js')
+        script(src='vendors/flot-chart/jquery.flot.spline.js')
+        script(src='vendors/calendar/zabuto_calendar.min.js')
+        script(src='vendors/sco.message/sco.message.js')
+        script(src='vendors/intro.js/intro.js')
+        script(src='js/index.js')
