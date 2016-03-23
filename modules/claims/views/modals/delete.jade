@@ -1,0 +1,7 @@
+.modal-header
+    h3.modal-title Are you sure you want to delete:
+.modal-body
+    h4 {{ deleteClaim.claimNumber }} - {{ deleteClaim.claimantFirstName }} {{ deleteClaim.claimantLastName }}
+.modal-footer
+    button.btn.btn-red(ng-click='delete()') Delete
+    button.btn.btn-blue(ng-click='cancel()') Cancel

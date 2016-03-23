@@ -1,0 +1,65 @@
+{
+  "name": "startbootstrap-sb-admin-2",
+  "version": "1.0.7",
+  "homepage": "http://startbootstrap.com/template-overviews/sb-admin-2/",
+  "authors": [
+    "David Miller"
+  ],
+  "description": "A free, open source, Bootstrap admin theme created by Start Bootstrap",
+  "keywords": [
+    "bootstrap",
+    "theme"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "pages",
+    "index.html",
+    "/js"
+  ],
+  "main": [
+    "dist/css/sb-admin-2.css",
+    "dist/js/sb-admin-2.js"
+  ],
+  "dependencies": {
+    "datatables": "~1.10.4",
+    "datatables-plugins": "~1.0.1",
+    "flot": "~0.8.3",
+    "font-awesome": "~4.2.0",
+    "holderjs": "~2.4.1",
+    "morrisjs": "~0.5.1",
+    "datatables-responsive": "~1.0.3",
+    "bootstrap-social": "~4.8.0",
+    "flot.tooltip": "~0.8.4",
+
+
+    "angular": "~1.5.0",
+    "angular-bootstrap": "~0.14.1",
+    "angular-cron-jobs": "~1.4.1",
+    "angular-loading-bar": "~0.8.0",
+    "angular-local-storage": "~0.2.3",
+    "angular-mocks": "~1.5.0",
+    "angular-numeraljs": "^1.1.6",
+    "angular-route": "~1.5.0",
+    "angular-resource": "~1.5.0",
+    "angular-sanitize": "~1.5.0",
+    "angular-ui-router": "~0.2.15",
+    "async": "~1.4.2",
+    "bootstrap": "~3.3.6",
+    "components-font-awesome": "~4.5.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
+    "jquery-migrate": "~1.2.1",
+    "moment": "~2.10.6",
+    "moment-timezone": "~0.4.1",
+    "metisMenu": "~2.2.0",
+    "ng-file-upload": "~9.0.13",
+    "numeral": "^1.5.3",
+    "ocLazyLoad": "~1.0.6"
+  }
+}

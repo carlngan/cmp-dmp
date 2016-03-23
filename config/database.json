@@ -1,0 +1,29 @@
+{
+    "production": {
+        "host": "ds059115.mlab.com",
+        "db": "cmp-dmp-prod",
+        "port": "59115",
+        "credentials": {
+            "user": "cmp-dmp-prod",
+            "pass": "cmp-dmp-prod333"
+        }
+    },
+    "development": {
+        "host": "ds059115.mlab.com",
+        "db": "cmp-dmp-dev",
+        "port": "59115",
+        "credentials": {
+            "user": "cmp-dmp-dev",
+            "pass": "cmp-dmp-dev333"
+        }
+    },
+    "test": {
+        "host": "ds059115.mlab.com",
+        "db": "cmp-dmp-test",
+        "port": "59115",
+        "credentials": {
+            "user": "cmp-dmp-test",
+            "pass": "cmp-dmp-test333"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "production": {
+        "apiUrl": "http://api.cmp.carlngan.com"
+    },
+    "development": {
+        "apiUrl": "http://localhost:3001"
+    },
+    "test": {
+        "apiUrl": "http://api-test.cmp.carlngan.com"
+    }
+}

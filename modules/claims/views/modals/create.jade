@@ -1,0 +1,88 @@
+.modal-header
+    button.close(type="button", ng-click='cancel()')
+        span(aria-hidden="true") &#215;
+    h4.modal-title Create Claim
+.modal-body
+    form
+        .container-fluid
+            .row
+                ul.nav.ul-edit.nav-tabs.responsive
+                    li.active.col-md-4(style="padding-left:0;")
+                        a.btn(data-toggle='tab', ng-click="method='xml'") By XML
+                    li.col-md-4
+                        a.btn(data-toggle='tab', ng-click="method='form'") By Form
+                    li.col-md-4(style="padding-right:0;")
+                        a.btn(data-toggle='tab', ng-click="method='json'") By JSON
+                //- Create By XML
+                .panel.panel-primary(ng-show="method=='xml'")
+                    .panel-heading
+                        h3.panel-title Create Claim By XML
+                    .panel-body
+                        .row
+                            //- XML Uploader
+                            .col-xs-12.col-sm-12.form-group
+                                label(for='xmlFile') Upload XML
+                                input#xmlFile(type='file', on-read-file="showContent($fileContent)", accept=".xml")
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='xmlContent') XML Content
+                                textarea.form-control(rows="10",placeholder='XML Content', id="xmlContent", ng-model="xmlContent")
+                //- Create By Form
+                .panel.panel-primary(ng-show="method=='form'")
+                    .panel-heading
+                        h3.panel-title Create Claim By Form
+                    .panel-body
+                        .row
+                            //- Claim Number & FIRST & LAST NAME
+                            .col-xs-12.col-sm-12.form-group.required
+                                label.control-label(for='claimNumber') claimNumber
+                                input.form-control(type='text', placeholder='Claim Number', id="claimNumber", ng-model="claimNumber")
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='claimantFirstName') First Name
+                                input.form-control(type='text', placeholder='Claimant First Name', id="claimantFirstName", ng-model="claimantFirstName")
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='claimantLastName') Last Name
+                                input.form-control(type='text', placeholder='Claimant Last Name', id="claimantLastName", ng-model="claimantLastName")
+                            //- status and loss date/info
+                            .col-xs-12.col-sm-4.form-group
+                                label.control-label(for="status") Status
+                                select.form-control(id="status", name="status", ng-model="status", ng-options="s for s in statusOpts")
+                                    option(value="", selected, disabled) Status
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossDate') Loss Date
+                                input.form-control(type='text', placeholder='Date', id="lossDate", ng-model="lossDate")
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.causeOfLoss') Cause of Loss
+                                input.form-control(type='text', placeholder='Cause of Loss', id="lossInfo.causeOfLoss", ng-model="lossInfo.causeOfLoss")
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.reportedDate') Reported Date
+                                input.form-control(type='text', placeholder='Reported Date', id="lossInfo.reportedDate", ng-model="lossInfo.reportedDate")
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.lossDescription') Description of Loss
+                                input.form-control(type='text', placeholder='Description of Loss', id="lossInfo.lossDescription", ng-model="lossInfo.lossDescription")
+                            //- Assigned Adjuster ID
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='assignedAdjusterID') Assigned Adjuster ID
+                                input.form-control(type='text', placeholder='Assigned Adjuster ID', id="assignedAdjusterID", ng-model="assignedAdjusterID")
+                //- Create By JSON
+                .panel.panel-primary(ng-show="method=='json'")
+                    .panel-heading
+                        h3.panel-title Coming Soon!
+                .col-xs-12
+                    .alert.alert-dismissable.alert-danger.register-fail(ng-if="err", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{err.code}}: {{err.msg}}
+                    .alert.alert-dismissable.alert-success(ng-if="success", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{success.msg}}
+                    .alert.alert-dismissable.alert-info(ng-if="pending", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{pending.msg}}
+                                
+.modal-footer
+    button.btn.btn-primary(type="button", ng-click='validate()', ng-show="method=='xml'") Validate
+    button.btn.btn-default(type="button", ng-click='cancel()') Close
+    button.btn.btn-blue(type="button", ng-click='createCheck()') Create
+    button.btn.btn-danger(type="button", ng-click='create()', ng-show="showCreateAnyway") Create Anyway

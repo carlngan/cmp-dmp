@@ -1,0 +1,119 @@
+// BEGIN CONTENT
+.page-content
+    .row
+        .col-xs-12.col-sm-12.col-md-12.col-lg-12
+            .portlet.box.portlet-grey
+                .portlet-header
+                    .caption
+                        | Claims Manager
+                    .actions
+                        .btn-group(style="margin-left:10px;")
+                            button.btn.btn-primary.btn-md(title="Create", href="javascript:void(0)", ng-click="create()")
+                                i.fa.fa-plus
+                                | &nbspCreate Claim
+                .portlet-body.pan
+                    .alert.alert-dismissable.alert-danger.register-fail(ng-if="err", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{err.code}}: {{err.msg}}
+                    .alert.alert-dismissable.alert-success(ng-if="success", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{success.msg}}
+                    .alert.alert-dismissable.alert-info(ng-if="pending", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{pending.msg}}
+                    .portlet-body
+                        .form-search-filter
+                            .input-icon
+                                i.fa.fa-search
+                                input.form-control(type='text', placeholder='Search claim(s)...', ng-model='search', ng-change="searchClaim(search);")
+                        p
+                            .div
+                                .div Search By Loss Date Range (in Pacfic Time Zone):
+                                .input-group
+                                    input#rangeStart.form-control(type='text', name='rangeStart', ng-model="rangeStart", ng-change="updateRange()", placeholder="2014-07-10T00:19:13.631Z")
+                                    span.input-group-addon to
+                                    input#rangeEnd.form-control(type='text', name='rangeEnd',  ng-model="rangeEnd", ng-change="updateRange()",placeholder="2014-07-10T00:19:13.631Z")
+                            .btn-group.btn-group-sm
+                                button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+                                    | Sort by&nbsp
+                                    span.caret
+                                ul.dropdown-menu.sort-by(ng-model='orderProp')
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('lossDate', 1);" ) Loss Date (ascending)
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('lossDate', -1);") Loss Date (descending)
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('climantFirstName', 1);" ) Name (ascending)
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('climantFirstName', -1);") Name (descending)
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('claimNumber', 1);" ) Claim Number (ascending)
+                                    li
+                                        a.sort(href="#", ng-click="selectSort('claimNumber', -1);") Claim Number (descending)
+                            a#refreshList.btn.btn-white.btn-sm(ng-click="resetFilters()")
+                                | Reset&nbsp
+                                i.fa.fa-refresh
+                            .btn-group.pull-right
+                                button.btn.btn-default.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown')
+                                    i.fa.fa-list
+                                    | &nbspItems per page&nbsp
+                                    span.caret
+                                ul.dropdown-menu.pull-right
+                                    li
+                                        a(href="javascript:void(0)", ng-click="setPerPage(10)")
+                                            | 10
+                                    li
+                                        a(href="javascript:void(0)", ng-click="setPerPage(20)")
+                                            | 20
+                                    li
+                                        a(href="javascript:void(0)", ng-click="setPerPage(50)")
+                                            | 50
+                                    li
+                                        a(href="javascript:void(0)", ng-click="setPerPage(100)")
+                                            | 100
+                                    li
+                                        a(href="javascript:void(0)", ng-click="setPerPage(-1)")
+                                            | All
+                    .container.col-md-12
+                        .table-responsive
+                            table.table.table-striped.table-hover.thumb-small.neat-table
+                                thead
+                                    tr.condensed
+                                        th(scope='col')
+                                            | Loss Date
+                                            span.column-sorter
+                                        th(scope='col')
+                                            | Name
+                                            span.column-sorter
+                                        th(scope='col')
+                                            | Claim Number
+                                            span.column-sorter
+                                        th(scope='col')
+                                            | Status
+                                            span.column-sorter
+                                        th(scope='col')
+                                            | Action(s)
+                                            span.column-sorter
+                                tbody.media-thumb
+                                    tr(ng-repeat="c in claims")
+                                        td
+                                            div {{c.lossDate}}
+                                        td
+                                            div {{c.claimantFirstName}} {{c.claimantLastName}}
+                                        td
+                                            div {{c.claimNumber}}
+                                        td
+                                            div {{c.status}}
+                                        td
+                                            .btn-group
+                                                a.btn.btn-sm.btn-blue(href="javascript:void(0)", title="Update", ng-click="update(c)")
+                                                    i.fa.fa-edit
+                                                a.btn.btn-sm.btn-red(href="javascript:void(0)", title="Delete", ng-click="delete(c)")
+                                                    i.fa.fa-times
+                    .text-center
+                        uib-pagination.pagination-md.top-zero(total-items='claimCount', ng-model='page', max-size='null',
+                        boundary-links='true', rotate='false', items-per-page="perPage", ng-change="changePage(page)")
+//- END CONTENT
