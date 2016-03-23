@@ -439,11 +439,11 @@ angular.module("claims", [])
 
         ClaimsService.getClaims(
             {
-                id: claims.id
+                id: claim.id
             },
             //success function
             function(data) {
-                $scope.claims = data;
+                $scope.claim = data;
                 if(data.claimNumber){
                     $scope.claimNumber = data.claimNumber;
                 }
@@ -591,6 +591,12 @@ angular.module("claims", [])
                             updatedVehicleObj.licPlateState = xmlObj.Vehicles.VehicleDetails[i].LicPlateState;
                         }
                         if(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate) {
+                            if(!moment(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate).isValid()){
+                                var lastIndex = xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate.lastIndexOf("-");
+                                if(lastIndex > 0){
+                                    xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate = $scope.setCharAt(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate, lastIndex, " ");
+                                }
+                            }
                             updatedVehicleObj.licPlateExpDate = moment(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate).toISOString();
                         }
                         if(xmlObj.Vehicles.VehicleDetails[i].DamageDescription) {
@@ -600,12 +606,12 @@ angular.module("claims", [])
                             updatedVehicleObj.mileage = xmlObj.Vehicles.VehicleDetails[i].Mileage;
                         }
                         //find if this vehicle exists, if not create it and push it
-                        var existingVehiclesPos = $scope.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails[i].Vin);
+                        var existingVehiclesPos = claimsObj.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails[i].Vin);
                         if (existingVehiclesPos >=0 ) {
-                            $scope.vehicles[existingVehiclesPos] = updatedVehicleObj;
+                            claimsObj.vehicles[existingVehiclesPos] = updatedVehicleObj;
                         }
                         else{
-                            $scope.vehicles.push(updatedVehicleObj);
+                            claimsObj.vehicles.push(updatedVehicleObj);
                         }
                     }
                 }
@@ -636,6 +642,12 @@ angular.module("claims", [])
                         updatedVehicleObj.licPlateState = xmlObj.Vehicles.VehicleDetails.LicPlateState;
                     }
                     if(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate) {
+                        if(!moment(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate).isValid()){
+                            var lastIndex = xmlObj.Vehicles.VehicleDetails.LicPlateExpDate.lastIndexOf("-");
+                            if(lastIndex > 0){
+                                xmlObj.Vehicles.VehicleDetails.LicPlateExpDate = $scope.setCharAt(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate, lastIndex, " ");
+                            }
+                        }
                         updatedVehicleObj.licPlateExpDate = moment(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate).toISOString();
                     }
                     if(xmlObj.Vehicles.VehicleDetails.DamageDescription) {
@@ -645,19 +657,19 @@ angular.module("claims", [])
                         updatedVehicleObj.mileage = xmlObj.Vehicles.VehicleDetails.Mileage;
                     }
                     //find if this vehicle exists, if not create it and push it
-                    var existingVehiclesPos = $scope.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails.Vin);
+                    var existingVehiclesPos = claimsObj.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails.Vin);
                     if (existingVehiclesPos >=0 ) {
-                        $scope.vehicles[existingVehiclesPos] = updatedVehicleObj;
+                        claimsObj.vehicles[existingVehiclesPos] = updatedVehicleObj;
                     }
                     else{
-                        $scope.vehicles.push(updatedVehicleObj);
+                        claimsObj.vehicles.push(updatedVehicleObj);
                     }
                 }
 
             }
             $scope.pending = {msg:"Updating Claim..."};
             ClaimsService.update(
-                $scope.claims.id,
+                $scope.claim.id,
                 claimsObj,
                 function(data) {
                     $uibModalInstance.close({
@@ -670,6 +682,7 @@ angular.module("claims", [])
                     $scope.err = data;
                 }
             );
+
         };
 
         $scope.cancel = function () {
@@ -680,6 +693,11 @@ angular.module("claims", [])
             $scope.err = null;
             $scope.pending = null;
             $scope.success = null;
+        };
+        //credits: http://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
+        $scope.setCharAt = function(str,index,chr){
+            if(index > str.length-1) return str;
+            return str.substr(0,index) + chr + str.substr(index+1);
         }
     }])
 

@@ -33,7 +33,7 @@ mongoose.connect(configDB.host, configDB.db, configDB.port,
     });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+//app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(compression());
@@ -77,13 +77,6 @@ app.use(authenticationModule);
 
 const claimsModule = require('./modules/claims/app');
 app.use(claimsModule);
-/*
-app.all("/api/myself", AuthMiddleware.authenticateApi(), function(req, res){
-    res.status(200).send({
-        provider: req.session.provider,
-        employee: req.session.employee
-    });
-});*/
 
 app.all("/api", AuthMiddleware.authenticateApi(), function(req, res){
     request({
