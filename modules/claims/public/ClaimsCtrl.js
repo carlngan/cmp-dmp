@@ -137,14 +137,6 @@ angular.module("claims", [])
             }
         };
 
-        /*$scope.$watch('rangeStart', function() {
-            $scope.updateRange();
-        });
-
-        $scope.$watch('rangeEnd', function() {
-            $scope.updateRange();
-        });*/
-
         $scope.refresh = function(data) {
             clearTimeout($scope.activeRequest);
             $scope.activeRequest = setTimeout(function() {
@@ -285,7 +277,14 @@ angular.module("claims", [])
         $scope.createCheck = function() {
             $scope.clearMessages();
 
-            if (!$scope.validated) {
+            if ($scope.method != "xml") {
+                $scope.err = {
+                    code: "CLAIMS",
+                    msg: "Please use the XML upload or paste xml into XML content instead -- this is a coming soon feature!"
+                };
+                return;
+            }
+            else if (!$scope.validated) {
                 $scope.err = {
                     code: "CLAIMS",
                     msg: "Please validate your XML before trying to create -- you can force create anyway for the purpose of this demo."
@@ -302,6 +301,14 @@ angular.module("claims", [])
         $scope.create = function() {
             $scope.clearMessages();
 
+            if ($scope.method != "xml") {
+                $scope.err = {
+                    code: "CLAIMS",
+                    msg: "Please use the XML upload or paste xml into XML content instead -- this is a coming soon feature!"
+                };
+                return;
+            }
+
             var xmlObj = $.xml2json($scope.xmlContent);
 
             var claimsObj = {
@@ -309,36 +316,54 @@ angular.module("claims", [])
                 "claimantFirstName": xmlObj.ClaimantFirstName,
                 "claimantLastName": xmlObj.ClaimantLastName,
                 "status": xmlObj.Status,
-                "lossDate": xmlObj.LossDate,
+                "lossDate": xmlObj.LossDate?moment(xmlObj.LossDate).toISOString():undefined,
                 "assignedAdjusterID": xmlObj.AssignedAdjusterID
             };
 
             if(xmlObj.LossInfo){
                 claimsObj.lossInfo = {
                     "causeOfLoss": xmlObj.LossInfo.CauseOfLoss,
-                    "lossDescription": xmlObj.LossInfo.LossDescription,
+                    "lossDescription": xmlObj.LossInfo.LossDescription?moment(xmlObj.LossInfo.LossDescription).toISOString():undefined,
                     "reportedDate": xmlObj.LossInfo.ReportedDate
                 };
             }
             if(xmlObj.Vehicles && xmlObj.Vehicles.VehicleDetails){
                 claimsObj.vehicles = [];
-                for(var i=0; i < xmlObj.Vehicles.VehicleDetails.length; i++){
+                if(xmlObj.Vehicles.VehicleDetails.isArray){
+                    for(var i=0; i < xmlObj.Vehicles.VehicleDetails.length; i++){
+                        claimsObj.vehicles.push({
+                            "modelYear": xmlObj.Vehicles.VehicleDetails[i].ModelYear,
+                            "makeDescription": xmlObj.Vehicles.VehicleDetails[i].MakeDescription,
+                            "modelDescription": xmlObj.Vehicles.VehicleDetails[i].ModelDescription,
+                            "engineDescription": xmlObj.Vehicles.VehicleDetails[i].EngineDescription,
+                            "exteriorColor": xmlObj.Vehicles.VehicleDetails[i].ExteriorColor,
+                            "vin": xmlObj.Vehicles.VehicleDetails[i].Vin,
+                            "licPlate": xmlObj.Vehicles.VehicleDetails[i].LicPlate,
+                            "licPlateState": xmlObj.Vehicles.VehicleDetails[i].LicPlateState,
+                            "licPlateExpDate": xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate?moment(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate).toISOString():undefined,
+                            "damageDescription": xmlObj.Vehicles.VehicleDetails[i].DamageDescription,
+                            "mileage": xmlObj.Vehicles.VehicleDetails[i].Mileage
+                        });
+                    }
+                }
+                else{
                     claimsObj.vehicles.push({
-                        "modelYear": xmlObj.Vehicles.VehicleDetails[i].ModelYear,
-                        "makeDescription": xmlObj.Vehicles.VehicleDetails[i].MakeDescription,
-                        "modelDescription": xmlObj.Vehicles.VehicleDetails[i].ModelDescription,
-                        "engineDescription": xmlObj.Vehicles.VehicleDetails[i].EngineDescription,
-                        "exteriorColor": xmlObj.Vehicles.VehicleDetails[i].ExteriorColor,
-                        "vin": xmlObj.Vehicles.VehicleDetails[i].Vin,
-                        "licPlate": xmlObj.Vehicles.VehicleDetails[i].LicPlate,
-                        "licPlateState": xmlObj.Vehicles.VehicleDetails[i].LicPlateState,
-                        "licPlateExpDate": xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate,
-                        "damageDescription": xmlObj.Vehicles.VehicleDetails[i].DamageDescription,
-                        "mileage": xmlObj.Vehicles.VehicleDetails[i].Mileage
+                        "modelYear": xmlObj.Vehicles.VehicleDetails.ModelYear,
+                        "makeDescription": xmlObj.Vehicles.VehicleDetails.MakeDescription,
+                        "modelDescription": xmlObj.Vehicles.VehicleDetails.ModelDescription,
+                        "engineDescription": xmlObj.Vehicles.VehicleDetails.EngineDescription,
+                        "exteriorColor": xmlObj.Vehicles.VehicleDetails.ExteriorColor,
+                        "vin": xmlObj.Vehicles.VehicleDetails.Vin,
+                        "licPlate": xmlObj.Vehicles.VehicleDetails.LicPlate,
+                        "licPlateState": xmlObj.Vehicles.VehicleDetails.LicPlateState,
+                        "licPlateExpDate": xmlObj.Vehicles.VehicleDetails.LicPlateExpDate,
+                        "damageDescription": xmlObj.Vehicles.VehicleDetails.DamageDescription,
+                        "mileage": xmlObj.Vehicles.VehicleDetails.Mileage
                     });
                 }
+
             }
-            $scope.pending = {_msg:"Creating Claims..."};
+            $scope.pending = {msg:"Creating Claims..."};
             ClaimsService.create(
                 claimsObj,
                 //success function
@@ -372,113 +397,76 @@ angular.module("claims", [])
         function ($scope, $uibModalInstance, claim, ClaimsService) {
 
         $scope.err = null;
-        $scope.pending = {_msg:"Getting claims details..."};
+        $scope.pending = {msg:"Getting claim details..."};
         $scope.success = null;
 
-        // STAFF FIELDS
-        $scope.name = {};
-        $scope.groups = groups;
-        $scope.selectedGroups = [];
-        $scope.address = [];
-        $scope.phone = [];
-        $scope.dob = {};
-        $scope.phone.type = "Mobile";
-        $scope.randomPassword = true;
-        $scope.sendEmailVerification = true;
-        $scope.sendWelcomeEmail = false;
-        $scope.isCollapsedClaimsAddress = true;
+        $scope.method = "xml";
+        $scope.validated = false;
 
-        // DOBOPTS
+        $scope.statusOpts = ["OPEN", "CLOSED"];
 
-        $scope.dobOpts = {};
-        $scope.dobOpts.months = [
-            {value: '01', name: 'January'},
-            {value: '02', name: 'February'},
-            {value: '03', name: 'March'},
-            {value: '04', name: 'April'},
-            {value: '05', name: 'May'},
-            {value: '06', name: 'June'},
-            {value: '07', name: 'July'},
-            {value: '08', name: 'August'},
-            {value: '09', name: 'September'},
-            {value: '10', name: 'October'},
-            {value: '11', name: 'November'},
-            {value: '12', name: 'December'}
-        ];
+        $scope.showContent = function($fileContent){
+            $scope.xmlContent = $fileContent;
+        };
 
-        $scope.dobOpts.days = [];
-        for(var i = 1; i <= 31; i++) {
-            if (i < 10) {
-                $scope.dobOpts.days.push('0' + i);
+        $scope.validate = function(){
+            $scope.pending = {msg:"Validating XML..."};
+            if(!$scope.xmlContent){
+                $scope.clearMessages();
+                return $scope.err = {code:"CLAIMS", msg:"XML Content is required -- either upload an xml file or copy and paste it's content."}
             }
-            else{
-                $scope.dobOpts.days.push(i);
-            }
-        }
-
-        $scope.dobOpts.years = [];
-        var currentYear = moment().format("YYYY");
-        for(i = currentYear; i > currentYear - 100; i--) {
-            $scope.dobOpts.years.push(String(i));
-        }
-
-        // GROUP SELECTION
-        $scope.selectGroup = function(groupId) {
-            var pos = $scope.selectedGroups.indexOf(groupId);
-            if (pos == -1) {
-                $scope.selectedGroups.push(groupId);
-            }
-            else{
-                $scope.selectedGroups.splice(pos, 1);
-            }
+            ClaimsService.validateClaim(
+                {
+                    xmlContent: $scope.xmlContent
+                },
+                //success function
+                function(data) {
+                    $scope.clearMessages();
+                    if(data!=""){
+                        $scope.err = {code: "CLAIMS", msg:data+ " - You can continue to create for this demo purpose, but it is highly recommended to fix the xml and re-validate."}
+                    }
+                    else{
+                        $scope.success = {msg: "XML is well-formed and validated!"};
+                        $scope.validate = true;
+                    }
+                },
+                //error function
+                function(data, status) {
+                    $scope.clearMessages();
+                    $scope.err = data;
+                })
         };
 
         ClaimsService.getClaims(
             {
-                id: claims._id
+                id: claims.id
             },
             //success function
             function(data) {
                 $scope.claims = data;
-                if(data._name && data._name._first){
-                    $scope.name.first = data._name._first;
+                if(data.claimNumber){
+                    $scope.claimNumber = data.claimNumber;
                 }
-                if(data._name && data._name._last){
-                    $scope.name.last = data._name._last;
+                if(data.claimantFirstName){
+                    $scope.claimantFirstName = data.claimantFirstName;
                 }
-                if(data._email && data._email._value){
-                    $scope.email = data._email._value;
+                if(data.claimantLastName){
+                    $scope.claimantLastName = data.claimantLastName;
                 }
-                if(data._gender){
-                    $scope.gender = data._gender;
+                if(data.status){
+                    $scope.status = data.status;
                 }
-                if(data._dob){
-                    $scope.dob.year = moment(data._dob._birthday).format('YYYY');
-                    $scope.dob.month = moment(data._dob._birthday).format('MM');
-                    $scope.dob.day = moment(data._dob._birthday).format('DD');
+                if(data.lossDate){
+                    $scope.lossDate = data.lossDate;
                 }
-
-                //@todo come back to array of phone and addresses when we have time
-                // PHONE
-                /*if (data._phone) {
-                    $scope.phone = data._phone;
-                    /*for (var i = 0; i < $scope.contact.phone.length; i = i + 1) {
-                        if ($scope.contact.phone[i].type == 'Business')
-                            $scope.company.phone = $scope.contact.phone[i].number;
-                        else
-                            $scope.phone = $scope.contact.phone[i];
-                    }*/
-                /*}
-
-                if (data._address) {
-                    $scope.address = data._address;
+                if(data.lossInfo){
+                    $scope.lossInfo = data.lossInfo;
                 }
-
-                if (data._profileImage) {
-                    $scope.profileImage = data._profileImage;
-                }*/
-                if(data._groups){
-                    $scope.selectedGroups = data._groups.map(function(g){return g._id;});
+                if(data.assignedAdjusterID){
+                    $scope.assignedAdjusterID = data.assignedAdjusterID;
+                }
+                if(data.vehicles){
+                    $scope.vehicles = data.vehicles;
                 }
                 $scope.clearMessages();
 
@@ -490,65 +478,190 @@ angular.module("claims", [])
             }
         );
 
-        $scope.updateFormProcess = function() {
-
+        $scope.updateCheck = function() {
             $scope.clearMessages();
 
-            var dob = null;
-            var phoneObj = [];
-            var addressObj = [];
-
-            //make sure all dob fields are filled in if any is filled
-            if ($scope.dob.year || $scope.dob.month || $scope.dob.day) {
-                if (!($scope.dob.year && $scope.dob.month && $scope.dob.day)) {
-                    return $scope.err = {_code:"ANG000", _msg:"Either all parts or no parts of DOB should be filled in."};
+            if ($scope.method != "xml") {
+                $scope.err = {
+                    code: "CLAIMS",
+                    msg: "Please use the XML upload or paste xml into XML content instead -- this is a coming soon feature!"
+                };
+                return;
+            }
+            else if (!$scope.validated) {
+                $scope.err = {
+                    code: "CLAIMS",
+                    msg: "Please validate your XML before trying to create -- you can force create anyway for the purpose of this demo."
+                };
+                if($scope.xmlContent){
+                    $scope.showUpdateAnyway = true;
                 }
-                dob = moment($scope.dob.year + '-' + $scope.dob.month + '-' + $scope.dob.day);
+                return;
             }
-            //if password is filled in, make sure it matches with confirm
-            if ($scope.password&&($scope.password!==$scope.passwordConfirm)) {
-                return $scope.err = {_code:"ANG000", _msg:"Passwords do not match!"};
+            else {
+                $scope.create();
             }
-            /*
-            //constructing phoneObj
-            if ($scope.phone.number && $scope.phone.type) {
-                phoneObj.push({
-                    type: $scope.phone.type,
-                    number: $scope.phone.number
-                });
+        };
+
+        $scope.update = function() {
+            $scope.clearMessages();
+
+            if ($scope.method != "xml") {
+                $scope.err = {
+                    code: "CLAIMS",
+                    msg: "Please use the XML upload or paste xml into XML content instead -- this is a coming soon feature!"
+                };
+                return;
             }
 
-            // Constructing addressObj
-            if ($scope.address) {
-                addressObj = [{
-                    "type": "Residential",
-                    "street": $scope.address.street,
-                    "city": $scope.address.city,
-                    "state": $scope.address.state,
-                    "zip": $scope.address.zip
-                }];
-            }*/
+            var xmlObj = $.xml2json($scope.xmlContent);
 
+            if(xmlObj.ClaimNumber){
+                $scope.claimNumber = xmlObj.ClaimNumber;
+            }
+            if(xmlObj.ClaimantFirstName){
+                $scope.claimantFirstName = xmlObj.ClaimantFirstName;
+            }
+            if(xmlObj.ClaimantLastName){
+                $scope.claimantLastName = xmlObj.ClaimantLastName;
+            }
+            if(xmlObj.Status){
+                $scope.status = xmlObj.Status;
+            }
+            if(xmlObj.LossDate){
+                $scope.lossDate = moment(xmlObj.LossDate).toISOString();
+            }
+            if(xmlObj.AssignedAdjusterID){
+                $scope.assignedAdjusterID = xmlObj.AssignedAdjusterID;
+            }
             var claimsObj = {
-                "name": {
-                    "first": $scope.name.first,
-                    "last": $scope.name.last
-                },
-                "gender": $scope.gender,
-                "dob": dob,
-                "email": {
-                    "value": $scope.email
-                },
-                "groups": $scope.selectedGroups
+                "claimNumber": $scope.claimNumber,
+                "claimantFirstName": $scope.claimantFirstName,
+                "claimantLastName": $scope.claimantLastName,
+                "status": $scope.status,
+                "lossDate": $scope.lossDate,
+                "assignedAdjusterID": $scope.assignedAdjusterID
             };
 
-            $scope.pending = {_msg:"Updating Claims..."};
-            ClaimsService.updateClaimsProfile(
-                $scope.claims._id,
+            if(xmlObj.LossInfo){
+                if(xmlObj.LossInfo.CauseOfLoss){
+                    $scope.lossInfo.causeOfLoss = xmlObj.LossInfo.CauseOfLoss;
+                }
+                if(xmlObj.LossInfo.LossDescription){
+                    $scope.lossInfo.lossDescription = xmlObj.LossInfo.LossDescription;
+                }
+                if(xmlObj.LossInfo.ReportedDate){
+                    $scope.lossInfo.reportedDate = xmlObj.LossInfo.ReportedDate;
+                }
+                claimsObj.lossInfo = {
+                    "causeOfLoss": xmlObj.LossInfo.CauseOfLoss,
+                    "lossDescription": xmlObj.LossInfo.LossDescription,
+                    "reportedDate": moment(xmlObj.LossInfo.ReportedDate).toISOString()
+                };
+            }
+            if(xmlObj.Vehicles && xmlObj.Vehicles.VehicleDetails){
+                if(!claimsObj.vehicles){
+                    claimsObj.vehicles = [];
+                }
+                if(xmlObj.Vehicles.VehicleDetails.isArray){
+                    for(var i=0; i < xmlObj.Vehicles.VehicleDetails.length; i++){
+                        var updatedVehicleObj = {};
+                        if(xmlObj.Vehicles.VehicleDetails[i].ModelYear) {
+                            updatedVehicleObj.modelYear = xmlObj.Vehicles.VehicleDetails[i].ModelYear;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].MakeDescription) {
+                            updatedVehicleObj.makeDescription = xmlObj.Vehicles.VehicleDetails[i].MakeDescription;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].ModelDescription) {
+                            updatedVehicleObj.modelDescription = xmlObj.Vehicles.VehicleDetails[i].ModelDescription;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].EngineDescription) {
+                            updatedVehicleObj.engineDescription = xmlObj.Vehicles.VehicleDetails[i].EngineDescription;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].ExteriorColor) {
+                            updatedVehicleObj.exteriorColor = xmlObj.Vehicles.VehicleDetails[i].ExteriorColor;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].Vin) {
+                            updatedVehicleObj.vin = xmlObj.Vehicles.VehicleDetails[i].Vin;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].LicPlate) {
+                            updatedVehicleObj.licPlate = xmlObj.Vehicles.VehicleDetails[i].LicPlate;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].LicPlateState) {
+                            updatedVehicleObj.licPlateState = xmlObj.Vehicles.VehicleDetails[i].LicPlateState;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate) {
+                            updatedVehicleObj.licPlateExpDate = moment(xmlObj.Vehicles.VehicleDetails[i].LicPlateExpDate).toISOString();
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].DamageDescription) {
+                            updatedVehicleObj.damageDescription = xmlObj.Vehicles.VehicleDetails[i].DamageDescription;
+                        }
+                        if(xmlObj.Vehicles.VehicleDetails[i].LicPlate) {
+                            updatedVehicleObj.mileage = xmlObj.Vehicles.VehicleDetails[i].Mileage;
+                        }
+                        //find if this vehicle exists, if not create it and push it
+                        var existingVehiclesPos = $scope.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails[i].Vin);
+                        if (existingVehiclesPos >=0 ) {
+                            $scope.vehicles[existingVehiclesPos] = updatedVehicleObj;
+                        }
+                        else{
+                            $scope.vehicles.push(updatedVehicleObj);
+                        }
+                    }
+                }
+                else{
+                    var updatedVehicleObj = {};
+                    if(xmlObj.Vehicles.VehicleDetails.ModelYear) {
+                        updatedVehicleObj.modelYear = xmlObj.Vehicles.VehicleDetails.ModelYear;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.MakeDescription) {
+                        updatedVehicleObj.makeDescription = xmlObj.Vehicles.VehicleDetails.MakeDescription;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.ModelDescription) {
+                        updatedVehicleObj.modelDescription = xmlObj.Vehicles.VehicleDetails.ModelDescription;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.EngineDescription) {
+                        updatedVehicleObj.engineDescription = xmlObj.Vehicles.VehicleDetails.EngineDescription;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.ExteriorColor) {
+                        updatedVehicleObj.exteriorColor = xmlObj.Vehicles.VehicleDetails.ExteriorColor;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.Vin) {
+                        updatedVehicleObj.vin = xmlObj.Vehicles.VehicleDetails.Vin;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.LicPlate) {
+                        updatedVehicleObj.licPlate = xmlObj.Vehicles.VehicleDetails.LicPlate;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.LicPlateState) {
+                        updatedVehicleObj.licPlateState = xmlObj.Vehicles.VehicleDetails.LicPlateState;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate) {
+                        updatedVehicleObj.licPlateExpDate = moment(xmlObj.Vehicles.VehicleDetails.LicPlateExpDate).toISOString();
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.DamageDescription) {
+                        updatedVehicleObj.damageDescription = xmlObj.Vehicles.VehicleDetails.DamageDescription;
+                    }
+                    if(xmlObj.Vehicles.VehicleDetails.Mileage) {
+                        updatedVehicleObj.mileage = xmlObj.Vehicles.VehicleDetails.Mileage;
+                    }
+                    //find if this vehicle exists, if not create it and push it
+                    var existingVehiclesPos = $scope.vehicles.map(function(e) { return e.vin; }).indexOf(xmlObj.Vehicles.VehicleDetails.Vin);
+                    if (existingVehiclesPos >=0 ) {
+                        $scope.vehicles[existingVehiclesPos] = updatedVehicleObj;
+                    }
+                    else{
+                        $scope.vehicles.push(updatedVehicleObj);
+                    }
+                }
+
+            }
+            $scope.pending = {msg:"Updating Claim..."};
+            ClaimsService.update(
+                $scope.claims.id,
                 claimsObj,
                 function(data) {
                     $uibModalInstance.close({
-                        success: {_msg:"Claims has been successfully updated!"},
+                        success: {msg:"Claim has been successfully updated!"},
                         data: data
                     });
                 },

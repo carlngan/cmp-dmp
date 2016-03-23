@@ -31,11 +31,11 @@
                                 input.form-control(type='text', placeholder='Search claim(s)...', ng-model='search', ng-change="searchClaim(search);")
                         p
                             .div
-                                .div Search By Loss Date Range (in Pacfic Time Zone):
+                                .div Search By Loss Date Range (pref ISO String, but will automatically convert any format):
                                 .input-group
-                                    input#rangeStart.form-control(type='text', name='rangeStart', ng-model="rangeStart", ng-change="updateRange()", placeholder="2014-07-10T00:19:13.631Z")
+                                    input#rangeStart.form-control(type='text', name='rangeStart', ng-model="rangeStart", ng-change="updateRange()", placeholder="Start Date")
                                     span.input-group-addon to
-                                    input#rangeEnd.form-control(type='text', name='rangeEnd',  ng-model="rangeEnd", ng-change="updateRange()",placeholder="2014-07-10T00:19:13.631Z")
+                                    input#rangeEnd.form-control(type='text', name='rangeEnd',  ng-model="rangeEnd", ng-change="updateRange()",placeholder="End Date")
                             .btn-group.btn-group-sm
                                 button.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
                                     | Sort by&nbsp
