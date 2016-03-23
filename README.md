@@ -3,12 +3,12 @@
 
 # Instructions
 1. Navigate to your desired folder(it should be blank), or create a new folder for this project (i.e. cmp-dmp)
-3. cd into the folder: `cd cmp-dmp`
-4. Clone the repo into this folder: `git clone https://github.com/carlngan/cmp-dmp .`
-5. `npm install` or `sudo npm install`
-6. `bower install`
-7. Make a file called ".env" -- `vim .env`
-8. Paste the following content:
+2. cd into the folder: `cd cmp-dmp`
+3. Clone the repo into this folder: `git clone https://github.com/carlngan/cmp-dmp .`
+4. `npm install` or `sudo npm install`
+5. `bower install`
+6. Make a file called ".env" -- `vim .env`
+7. Paste the following content:
 ```
 
 EXPRESS_SECRET=CARL
@@ -16,11 +16,11 @@ NODE_ENV=development
 PORT=3002
 
 ```
-9. `npm start`
+8. `npm start`
 
-10.  Follow the instructions to start the api here: https://github.com/carlngan/cmp-api
+9.  Follow the instructions to start the api here: https://github.com/carlngan/cmp-api
 
-11.  You can test locally by opening "localhost:3002"
+10.  You can test locally by opening "localhost:3002"
 
 # Project in production
 http://dmp.cmp.carlngan.com
