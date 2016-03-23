@@ -5,7 +5,7 @@ angular.module("authApp", [])
     // =========================================================================
     .controller("AuthenticationCtrl", function ($scope, $window, AuthenticationService) {
 
-        $scope.redirectUrl = window.redirectUrl || "/dashboard";
+        $scope.redirectUrl = window.redirectUrl || "/claims";
 
         $scope.login = function(){
             $scope.error = null;
