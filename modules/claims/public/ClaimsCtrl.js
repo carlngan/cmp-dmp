@@ -223,6 +223,29 @@ angular.module("claims", [])
             });
         }; // end $scope.deleteClaims
 
+        // Claims details modal
+        $scope.details = function(claim) {
+            $scope.clearMessages();
+
+            var modalInstance = $uibModal.open({
+                templateUrl: '/templates/claims/details',
+                controller: 'ClaimsDetailCtrl',
+                size: "md",
+                resolve: {
+                    claim: function () {
+                        return claim;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (data) {
+                if (data.err)
+                {
+                    $scope.err = data.err;
+                }
+            });
+        };
+
         $scope.clearMessages = function(){
             $scope.err = null;
             $scope.pending = null;
@@ -732,6 +755,56 @@ angular.module("claims", [])
         };
 
     }])
+
+    .controller("ClaimsDetailCtrl", ["$scope", "$uibModalInstance", "claim", "ClaimsService",
+        function ($scope, $uibModalInstance, claim, ClaimsService) {
+
+            ClaimsService.getClaims(
+                {
+                    id: claim.id
+                },
+                //success function
+                function(data) {
+                    $scope.claim = data;
+                    if(data.claimNumber){
+                        $scope.claimNumber = data.claimNumber;
+                    }
+                    if(data.claimantFirstName){
+                        $scope.claimantFirstName = data.claimantFirstName;
+                    }
+                    if(data.claimantLastName){
+                        $scope.claimantLastName = data.claimantLastName;
+                    }
+                    if(data.status){
+                        $scope.status = data.status;
+                    }
+                    if(data.lossDate){
+                        $scope.lossDate = data.lossDate;
+                    }
+                    if(data.lossInfo){
+                        $scope.lossInfo = data.lossInfo;
+                    }
+                    if(data.assignedAdjusterID){
+                        $scope.assignedAdjusterID = data.assignedAdjusterID;
+                    }
+                    if(data.vehicles){
+                        $scope.vehicles = data.vehicles;
+                    }
+                    $scope.clearMessages();
+
+                },
+                //error function
+                function(data, status) {
+                    $scope.clearMessages();
+                    $scope.err = data;
+                }
+            );
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
+
+        }])
 
     //credits to: http://jsfiddle.net/alexsuch/6aG4x/
     .directive('onReadFile', function ($parse) {

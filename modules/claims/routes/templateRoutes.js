@@ -22,4 +22,8 @@ router.get('/delete', AuthMiddleware.authenticate(), function(req, res) {
     res.render('modals/delete');
 });
 
+router.get('/details', AuthMiddleware.authenticate(), function(req, res) {
+    res.render('modals/details');
+});
+
 module.exports = router;

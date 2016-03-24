@@ -98,7 +98,7 @@
                                             | Action(s)
                                             span.column-sorter
                                 tbody.media-thumb
-                                    tr(ng-repeat="c in claims")
+                                    tr(ng-repeat="c in claims", ng-click="details(c)", style="cursor:pointer;")
                                         td
                                             div {{c.lossDate}}
                                         td

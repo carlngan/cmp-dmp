@@ -1,0 +1,94 @@
+.modal-header
+    button.close(type="button", ng-click='cancel()')
+        span(aria-hidden="true") &#215;
+    h4.modal-title Claim Details
+.modal-body
+    form
+        .container-fluid
+            .row
+                .panel.panel-primary
+                    .panel-heading
+                        h3.panel-title Create Claim By Form
+                    .panel-body
+                        .row
+                            //- Claim Number & FIRST & LAST NAME
+                            .col-xs-12.col-sm-12.form-group.required
+                                label.control-label(for='claimNumber') Claim Number
+                                input.form-control(type='text', placeholder='Claim Number', id="claimNumber", ng-model="claim.claimNumber", disabled)
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='claimantFirstName') First Name
+                                input.form-control(type='text', placeholder='Claimant First Name', id="claimantFirstName", ng-model="claim.claimantFirstName", disabled)
+                            .col-xs-12.col-sm-6.form-group
+                                label.control-label(for='claimantLastName') Last Name
+                                input.form-control(type='text', placeholder='Claimant Last Name', id="claimantLastName", ng-model="claim.claimantLastName", disabled)
+                            //- status and loss date/info
+                            .col-xs-12.col-sm-4.form-group
+                                label.control-label Status
+                                div.form-control {{claim.status}}
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossDate') Loss Date
+                                input.form-control(type='text', placeholder='Date', id="lossDate", ng-model="claim.lossDate", disabled)
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.causeOfLoss') Cause of Loss
+                                input.form-control(type='text', placeholder='Cause of Loss', id="lossInfo.causeOfLoss", ng-model="claim.lossInfo.causeOfLoss", disabled)
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.reportedDate') Reported Date
+                                input.form-control(type='text', placeholder='Reported Date', id="lossInfo.reportedDate", ng-model="claim.lossInfo.reportedDate", disabled)
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='lossInfo.lossDescription') Description of Loss
+                                input.form-control(type='text', placeholder='Description of Loss', id="lossInfo.lossDescription", ng-model="claim.lossInfo.lossDescription", disabled)
+                            //- Assigned Adjuster ID
+                            .col-xs-12.col-sm-12.form-group
+                                label.control-label(for='assignedAdjusterID') Assigned Adjuster ID
+                                input.form-control(type='text', placeholder='Assigned Adjuster ID', id="assignedAdjusterID", ng-model="claim.assignedAdjusterID", disabled)
+                            .col-xs-12.col-sm-12.form-group(ng-repeat="v in claim.vehicles") Vehicles
+                                .col-xs-12.col-sm-12.form-group
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='modelYear') Model Year
+                                        input.form-control(type='text', id="modelYear", ng-model="v.modelYear", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='makeDescription') Make Description
+                                        input.form-control(type='text', id="makeDescription", ng-model="v.makeDescription", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='modelDescription') Model Description
+                                        input.form-control(type='text', id="modelDescription", ng-model="v.modelDescription", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='engineDescription') Engine Description
+                                        input.form-control(type='text', id="engineDescription", ng-model="v.engineDescription", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='exteriorColor') Exterior Color
+                                        input.form-control(type='text', id="exteriorColor", ng-model="v.exteriorColor", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='vin') VIN
+                                        input.form-control(type='text', id="vin", ng-model="v.vin", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='licPlate') License Plate
+                                        input.form-control(type='text', id="licPlate", ng-model="v.licPlate", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='licPlateState') License Plate State
+                                        input.form-control(type='text', id="licPlateState", ng-model="v.licPlateState", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='licPlateExpDate') License Plate Exp Date
+                                        input.form-control(type='text', id="licPlateExpDate", ng-model="v.licPlateExpDate", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='damageDescription') Damage Description
+                                        input.form-control(type='text', id="damageDescription", ng-model="v.damageDescription", disabled)
+                                    .col-xs-12.col-sm-12.form-group
+                                        label.control-label(for='mileage') Mileage
+                                        input.form-control(type='text', id="mileage", ng-model="v.mileage", disabled)
+                .col-xs-12
+                    .alert.alert-dismissable.alert-danger.register-fail(ng-if="err", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{err.code}}: {{err.msg}}
+                    .alert.alert-dismissable.alert-success(ng-if="success", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{success.msg}}
+                    .alert.alert-dismissable.alert-info(ng-if="pending", ng-cloak)
+                        button.close(data-dismiss='alert', type='button') &times;
+                        p.
+                            {{pending.msg}}
+                                
+.modal-footer
+    button.btn.btn-default(type="button", ng-click='cancel()') Close
